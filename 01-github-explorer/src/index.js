@@ -1,5 +1,5 @@
 const user = {
   name: 'André',
-}
+};
 
-console.log(user.address?.street)
+console.log(user.address?.street);
