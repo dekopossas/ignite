@@ -8,13 +8,13 @@ function Sidebar() {
         Cronograma de aulas
       </span>
 
-      <div>
-        <Lession />
-        <Lession />
-        <Lession />
-        <Lession />
-        <Lession />
-        <Lession />
+      <div className="flex flex-col gap-8">
+        <Lession 
+          title="Aula-01"
+          slug="aula-01"
+          availableAt={new Date()}
+          type="class"
+        />
       </div>
     </aside>
   )
