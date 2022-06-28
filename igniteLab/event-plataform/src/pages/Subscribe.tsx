@@ -1,7 +1,37 @@
-import React from 'react';
+import { gql, useMutation } from '@apollo/client';
+import React, { useState, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Logo } from '../components/Logo';
 
+const CREATE_SUBSCRIBE_MUTATION = gql`
+  mutation CreateSubscriber($name: String!, $email: String!) {
+    createSubscriber(data: { name: $name, email: $email }) {
+      id
+    }
+  }
+`;
+
 function Subscribe() {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const [createSubscriber] = useMutation(CREATE_SUBSCRIBE_MUTATION);
+
+  const handleSubscribed = async (event: FormEvent) => {
+    event.preventDefault();
+
+    await createSubscriber({
+      variables: {
+        name,
+        email,
+      },
+    });
+
+    navigate('/event');
+  };
+
   return (
     <div className="min-h-screen bg-blur bg-cover bg-no-repeat flex flex-col items-center">
       <div className="w-full max-w-[1100px] flex items-center justify-between mt-20 mx-auto">
@@ -22,16 +52,18 @@ function Subscribe() {
         <div className="p-8 bg-gray-700 border border-gray-500 rounded">
           <strong className="text-2xl mb-6 block">Inscreva-se Gratuitamente</strong>
 
-          <form action="" className="flex flex-col gap-2 w-full">
+          <form onSubmit={handleSubscribed} className="flex flex-col gap-2 w-full">
             <input
               className="bg-gray-900 rounded px-5 h-14"
               type="text"
               placeholder="Seu nome completo"
+              onChange={(event) => setName(event.target.value)}
             />
             <input
               className="bg-gray-900 rounded px-5 h-14"
               type="email"
               placeholder="Digite seu e-mail"
+              onChange={(event) => setEmail(event.target.value)}
             />
 
             <button
